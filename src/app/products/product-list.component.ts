@@ -10,7 +10,7 @@ import { ProductService } from './product.service';
 export class ProductListComponent implements OnInit {
     pageTitle: string = 'Product List';
     listFilter: string;
-    showImage: boolean;
+    showImage: boolean = true;
 
     imageWidth: number = 50;
     imageMargin: number = 2;
@@ -30,6 +30,12 @@ export class ProductListComponent implements OnInit {
             (error: any) => this.errorMessage = <any>error
         );
     }
+
+    // super long way
+    // onFilterChange(filter: string): void {
+    //     this.listFilter = filter
+    //     this.performFilter(this.listFilter)
+    // }
 
     toggleImage(): void {
         this.showImage = !this.showImage;

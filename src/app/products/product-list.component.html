@@ -8,8 +8,12 @@
         <div class='row'>
             <div class='col-md-2'>Filter by:</div>
             <div class='col-md-4'>
+                <!-- [(ngModel)]='listFilter' short way -->
                 <input type='text'
-                       [(ngModel)]='listFilter' />
+                    [ngModel] = 'listFilter'
+                    (ngModelChange) = 'onFilterChange($event)'
+                /> 
+                       
             </div>
         </div>
         <div class='row' [hidden]='!listFilter'>
