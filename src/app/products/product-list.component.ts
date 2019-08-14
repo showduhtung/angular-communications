@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { IProduct } from './product';
 import { ProductService } from './product.service';
 import { CriteriaComponent } from '../shared/criteria/criteria.component';
+import { ProductParameterService } from './product-parameter.service';
 
 
 @Component({
@@ -11,10 +12,8 @@ import { CriteriaComponent } from '../shared/criteria/criteria.component';
 })
 export class ProductListComponent implements OnInit, AfterViewInit {
     pageTitle: string = 'Product List';
-    showImage: boolean = true;
+    // showImage: boolean = true;
     includeDetail: boolean = true
-    @ViewChild(CriteriaComponent) filterComponent: CriteriaComponent
-
     parentListFilter: string;
 
     imageWidth: number = 50;
@@ -25,24 +24,38 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     filteredProducts: IProduct[];
     products: IProduct[];
 
-    constructor(private productService: ProductService) {
+    @ViewChild(CriteriaComponent) filterComponent: CriteriaComponent
+
+    get showImage(): boolean {
+        return this.productParameterService.showImage
+
+    }
+    set showImage(value: boolean){
+        this.productParameterService.showImage = value
     }
 
-    ngAfterViewInit(): void{
-        this.parentListFilter = this.filterComponent.listFilter;
+    constructor(private productService: ProductService,
+                private productParameterService:ProductParameterService
+        ) {
     }
+
+    // ngAfterViewInit(): void{
+    //     this.parentListFilter = this.filterComponent.listFilter;
+    // }
 
     ngOnInit(): void {
         this.productService.getProducts().subscribe(
             (products: IProduct[]) => {
                 this.products = products;
-                this.performFilter(this.parentListFilter);
+                this.filterComponent.listFilter = this.productParameterService.filterBy
+                // this.performFilter(this.parentListFilter);
             },
             (error: any) => this.errorMessage = <any>error
         );
     }
 
     onValueChange(value : string) : void{ //listens to criteria's @Output 
+        this.productParameterService.filterBy = value
         this.performFilter(value)
     }
 

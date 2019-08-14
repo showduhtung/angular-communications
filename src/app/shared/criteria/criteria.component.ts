@@ -13,7 +13,7 @@ export class CriteriaComponent implements OnInit, AfterViewInit, OnChanges {
   
   @ViewChild('filterElement') filterElementRef: ElementRef
 
-  private _listFilter: string = "cart";
+  private _listFilter: string = "";
   get listFilter(): string{
     return this._listFilter
   }
